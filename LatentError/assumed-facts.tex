@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\textheight9in
+\textwidth6.75in
+
+\newtheorem{fact}{Fact}
+
+% Notation shortcuts
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\opnorm}[1]{\left\lVert #1 \right\rVert_{\mathrm{op}}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\lam}{\lambda}
+
+\title{Assumed Background Facts for the Lean Formalization\\
+of ``Estimation Error in Latent High-Dimensional Factor Models''}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+The three statements below are the only external inputs the formalization
+must assume. Each is (i)~classical, appearing in standard texts, (ii)~absent
+from the current Mathlib library, and (iii)~\emph{not} proved in the paper. The
+paper quotes each by name, and every other result in the paper
+is proved there and is to be derived in Lean from these three facts together with material already
+in Mathlib.
+
+Throughout, $(\Omega,\mathcal F,\PP)$ is a probability space; $A,A',A^{(p)}$
+denote real symmetric $m\times m$ matrices with eigenvalues listed in weakly
+decreasing order $\lam_1\ge\cdots\ge\lam_m$; $\opnorm{\cdot}$ is the operator
+(spectral) norm.
+
+\bigskip
+
+\begin{fact}[Kolmogorov strong law for independent, non-identically-distributed summands]
+\label{Fact1}
+Let $\{X_i\}_{i\ge 1}$ be independent real random variables on
+$(\Omega,\mathcal F,\PP)$ with finite variances satisfying Kolmogorov's series
+condition
+\[
+  \sum_{i=1}^{\infty}\frac{\Var(X_i)}{i^{2}} < \infty .
+\]
+Then we have
+\[
+  \frac{1}{p}\sum_{i=1}^{p}\bigl(X_i-\E[X_i]\bigr)
+  \;\xrightarrow[p\to\infty]{}\; 0
+  \qquad \PP\text{-almost surely.}
+\]
+\end{fact}
+
+
+\medskip
+\noindent\textbf{Reference.} V.~V.~Petrov, \emph{Sums of Independent Random
+Variables}, translated by A.~A.~Brown, Ergebnisse der Mathematik und ihrer
+Grenzgebiete, Band 82, Springer-Verlag, 1975 (the strong law of large numbers
+for sums of independent, not necessarily identically distributed, random
+variables).
+
+\bigskip
+
+\begin{fact}[Weyl's eigenvalue perturbation inequality]
+\label{Fact2}
+For real symmetric matrices $A, A' \in \R^{m\times m}$,
+\[
+  \bigl\lvert \lam_i(A') - \lam_i(A) \bigr\rvert \;\le\; \opnorm{A' - A},
+  \qquad i = 1,\dots,m .
+\]
+Consequently, if $A^{(p)}\to A$ (equivalently, since $m$ is fixed, entrywise),
+then $\lam_i\bigl(A^{(p)}\bigr)\to\lam_i(A)$ for every $i=1,\dots,m$.
+\end{fact}
+
+
+
+\medskip
+\noindent\textbf{Reference.} R.~Bhatia, \emph{Matrix Analysis}, Graduate Texts
+in Mathematics 169, Springer, 1997, Cor.~III.2.6.
+
+\bigskip
+
+\begin{fact}[Eigenvector continuity for a simple eigenvalue]
+\label{Fact3}
+Let $A^{(p)}, A \in \R^{m\times m}$ be real symmetric with $A^{(p)}\to A$.
+Suppose $\mu$ is a \emph{simple} eigenvalue of $A$ with unit eigenvector $v$
+(every unit vector $w$ with $Aw=\mu w$ satisfies $w=\pm v$). Then there exist
+$\mu^{(p)}\in\R$ and unit vectors $v^{(p)}\in\R^{m}$ such that, for all
+sufficiently large $p$,
+\[
+  A^{(p)} v^{(p)} = \mu^{(p)} v^{(p)},
+  \qquad \norm{v^{(p)}}_2 = 1,
+  \qquad \inner{v^{(p)}}{v} \ge 0,
+\]
+and $\mu^{(p)}\to\mu$, $v^{(p)}\to v$ as $p\to\infty$.
+\end{fact}
+
+
+\medskip
+\noindent\textbf{Reference.} C.~Davis and W.~M.~Kahan, ``The rotation of
+eigenvectors by a perturbation.~III,'' \emph{SIAM Journal on Numerical
+Analysis} \textbf{7} (1970), no.~1, 1--46.
+
+\end{document}
